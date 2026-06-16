@@ -68,7 +68,7 @@ function getBaseSettings(deviceName) {
       return x - Math.floor(x);
     }
     baseSettings[deviceName] = {
-            General: Math.floor(randFromHash(hash) * 36) + 85,
+      General: Math.floor(randFromHash(hash) * 36) + 85,
       RedDot: Math.floor(randFromHash(hash + 1) * 71) + 90,
       Scope2x: Math.floor(randFromHash(hash + 2) * 46) + 75,
       Scope4x: Math.floor(randFromHash(hash + 3) * 86) + 80,
@@ -114,7 +114,8 @@ const realDevices = [
   "Infinix Note 40 Pro Plus", "Infinix Note 40 Pro", "Infinix Note 40", "Infinix Note 30 Pro", "Infinix Note 12 Pro", "Infinix Note 11",
   "Infinix Hot 40 Pro", "Infinix Hot 40", "Infinix Hot 30", "Infinix Hot 12", "Infinix Hot 11", "Infinix Hot 10", "Infinix Hot 9",
   "Infinix Zero 40", "Infinix Zero 30", "Infinix Zero 20", "Infinix Zero 10",
-  "Infinix GT 20 Pro", "Infinix smart 10", "Infinix smart 10+", "Infinix GT 10 Pro", "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3", "Infinix Smart 8", "Infinix Smart 7", "Infinix Smart 6", // <-- COMMA ADDED HERE 
+  "Infinix GT 20 Pro", "Infinix smart 10", "Infinix smart 10+", "Infinix GT 10 Pro", "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3", "Infinix Smart 8", "Infinix Smart 7", "Infinix Smart 6",
+
   // XIAOMI/REDMI/POCO
   "Xiaomi 14 Ultra", "Xiaomi 14 Pro", "Xiaomi 14", "Xiaomi 13T Pro", "Xiaomi 12 Pro",
   "Redmi Note 14 Pro Plus", "Redmi Note 14 Pro", "Redmi Note 13 Pro Plus", "Redmi Note 13 Pro", "Redmi Note 12 Pro", "Redmi Note 11 Pro", "Redmi Note 10 Pro",
@@ -139,7 +140,7 @@ const realDevices = [
   "Macbook Pro M3 Max", "Macbook Pro M3", "Macbook Air M2",
 
   // NOKIA
-  "Nokia G42","Nokia G22","Nokia C32","Nokia C22","Nokia X30","Nokia G21","Nokia G11","Nokia C12","Nokia 2.4","Nokia 5.4","Nokia 3.4","Nokia 2.3","Nokia 1.4","Nokia 8.3 5G","Nokia 7.2","Nokia 6.2","Nokia 5.3","Nokia 4.2","Nokia 3.2","Nokia 2.2","Nokia 1 Plus","Nokia 9 PureView","Nokia 8.1","Nokia 7.1","Nokia 6.1 Plus","Nokia 5.1 Plus","Nokia 3.1 Plus","Nokia 2.1","Nokia 1","Nokia 3310 4G","Nokia 2720 Flip","Nokia 800 Tough","Nokia 6300 4G","Nokia 105","Nokia 110","Nokia Lumia 950","Nokia Lumia 950 XL","Nokia Lumia 930","Nokia Lumia 830","Nokia Lumia 730","Nokia Lumia 635", // <-- COMMA ADDED HERE
+  "Nokia G42","Nokia G22","Nokia C32","Nokia C22","Nokia X30","Nokia G21","Nokia G11","Nokia C12","Nokia 2.4","Nokia 5.4","Nokia 3.4","Nokia 2.3","Nokia 1.4","Nokia 8.3 5G","Nokia 7.2","Nokia 6.2","Nokia 5.3","Nokia 4.2","Nokia 3.2","Nokia 2.2","Nokia 1 Plus","Nokia 9 PureView","Nokia 8.1","Nokia 7.1","Nokia 6.1 Plus","Nokia 5.1 Plus","Nokia 3.1 Plus","Nokia 2.1","Nokia 1","Nokia 3310 4G","Nokia 2720 Flip","Nokia 800 Tough","Nokia 6300 4G","Nokia 105","Nokia 110","Nokia Lumia 950","Nokia Lumia 950 XL","Nokia Lumia 930","Nokia Lumia 830","Nokia Lumia 730","Nokia Lumia 635",
 
   // CONSOLE
   "Playstation 5", "PS5", "Playstation 4 Pro", "Playstation 4",
@@ -157,13 +158,12 @@ searchInput.addEventListener('input', function() {
 
   if(searchTerm === '') return;
 
-  // Filter only real devices that match what user type
   const matched = realDevices.filter(device =>
     device.toLowerCase().includes(searchTerm)
   );
 
   if(matched.length > 0) {
-    matched.forEach(device => {
+    matched.slice(0, 30).forEach(device => {
       const div = document.createElement('div');
       div.className = 'suggestion-item';
       div.textContent = device;
@@ -179,34 +179,20 @@ function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
   searchInput.value = deviceName;
 
-  const base = getBaseSettings(deviceName);
-  function smallVariation(baseVal) {
-    let newVal = baseVal + Math.floor(Math.random() * 11) - 5;
-    if(newVal < 1) newVal = 1;
-    if(newVal > 255) newVal = 255;
-    return newVal;
-  }
-  const settings = {
-    General: smallVariation(base.General),
-    RedDot: smallVariation(base.RedDot),
-    Scope2x: smallVariation(base.Scope2x),
-    Scope4x: smallVariation(base.Scope4x),
-    Sniper: smallVariation(base.Sniper),
-    FreeCamera: smallVariation(base.FreeCamera)
-  };
+  const settings = getBaseSettings(deviceName);
 
   resultsList.innerHTML = `
     <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
-      ${deviceName.toUpperCase()} - UNLIMITED PRO 🔥
+      ${deviceName.toUpperCase()} - PRO 🔥
     </h3>
-    <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Base: 1-255 | Variation: +/-5 only</p>
+    <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Locked Range Settings</p>
     <div>
-      <div class="phone-item"><b>General:</b> ${settings.General}</div>
-      <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
-      <div class="phone-item"><b>2x Scope:</b> ${settings.Scope2x}</div>
-      <div class="phone-item"><b>4x Scope:</b> ${settings.Scope4x}</div>
-      <div class="phone-item"><b>Sniper:</b> ${settings.Sniper}</div>
-      <div class="phone-item"><b>Free Camera:</b> ${settings.FreeCamera}</div>
+      <div class="phone-item"><b>General:</b> ${settings.General} <span style="color:#888; font-size:14px;">85-120</span></div>
+      <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot} <span style="color:#888; font-size:14px;">90-160</span></div>
+      <div class="phone-item"><b>2x Scope:</b> ${settings.Scope2x} <span style="color:#888; font-size:14px;">75-120</span></div>
+      <div class="phone-item"><b>4x Scope:</b> ${settings.Scope4x} <span style="color:#888; font-size:14px;">80-165</span></div>
+      <div class="phone-item"><b>Sniper:</b> ${settings.Sniper} <span style="color:#888; font-size:14px;">40-50</span></div>
+      <div class="phone-item"><b>Free Camera:</b> ${settings.FreeCamera} <span style="color:#888; font-size:14px;">15-25</span></div>
     </div>
   `;
 }
