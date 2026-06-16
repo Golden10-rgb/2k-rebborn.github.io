@@ -6,15 +6,44 @@
 <title>2k! REBBORN | Sensitivity Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-body {margin:0; padding:0; background:#000; color:#fff; font-family:'Poppins', sans-serif; min-height:100vh;}
-.container {max-width:500px; margin:auto; padding:25px 20px;}
+body {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  object-fit: cover;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  z-index: -1;
+}
+
+.container {max-width:500px; margin:auto; padding:25px 20px; position:relative; z-index:1;}
 .top {display:flex; justify-content:space-between; align-items:center; margin-bottom:50px;}
 .top h2 {color:#00ff88; text-shadow:0 0 25px #00ff88; font-size:22px; font-weight:800; margin:0;}
 .top button {background:transparent; border:2px solid #00ff88; color:#00ff88; padding:10px 22px; border-radius:50px; font-weight:700; font-size:14px;}
 h1 {color:#00ff88; font-size:38px; font-weight:800; text-shadow:0 0 30px #00ff88; margin:0; text-align:center; letter-spacing:1px;}
 .sub {color:#fff; font-size:18px; font-weight:700; margin:8px 0 25px 0; text-align:center;}
 p {color:#bbb; text-align:center; line-height:1.7; margin-bottom:40px; font-size:15px;}
-.box {border:2px solid #00ff88; border-radius:20px; padding:30px 25px; box-shadow:0 0 40px rgba(0,255,136,0.4); background:rgba(0,255,136,0.05);}
+.box {border:2px solid #00ff88; border-radius:20px; padding:30px 25px; box-shadow:0 0 40px rgba(0,255,136,0.4); background:rgba(0,0,0,0.6);}
 input {width:100%; padding:18px; margin-bottom:15px; border-radius:12px; border:2px solid #00ff88; background:#111; color:#fff; font-size:16px; box-sizing:border-box; font-family:'Poppins', sans-serif;}
 input::placeholder {color:#666;}
 button {width:100%; padding:18px; border-radius:12px; border:none; background:#00ff88; color:#000; font-weight:800; font-size:17px; cursor:pointer; box-shadow:0 0 25px #00ff88;}
@@ -24,6 +53,13 @@ button {width:100%; padding:18px; border-radius:12px; border:none; background:#0
 </style>
 </head>
 <body>
+
+<!-- VIDEO BACKGROUND - YOUR FF CLIP -->
+<video autoplay muted loop playsinline class="video-bg">
+  <source src="ff-bg.mp4.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
 <div class="container">
 <div class="top">
   <h2>2k! REBBORN</h2>
@@ -31,8 +67,9 @@ button {width:100%; padding:18px; border-radius:12px; border:none; background:#0
 </div>
 
 <h1>BECOME PRO</h1>
-<div class="sub">WITH Rebborngames</div>
-<p>Unlock powerful Free Fire sensitivity settings. Improve your aim, master headshots and become a stronger player using tested sensitivity recommendations from Nigeria gaming creator,2K! Rebborn.</p>
+<div class="sub">WITH 2k! REBBORN</div>
+<div style="text-align:center; color:#00ff88; font-size:14px; margin-bottom:15px;">Unlimited Devices • Unique Settings</div>
+  <p>Unlock powerful Free Fire sensitivity settings. Improve your aim, master headshots and become a stronger player using tested sensitivity recommendations from Nigeria gaming creator,Rebborngames.</p>
 
 <div class="box">
 <input type="text" id="phone" placeholder="Type phone name: iphone 13, tecno sp">
