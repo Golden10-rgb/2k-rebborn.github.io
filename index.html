@@ -6,7 +6,7 @@
 <title>2k! REBBON SENSI</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-  
+
   body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #000;
@@ -15,24 +15,23 @@
     padding: 25px 20px;
     background: radial-gradient(circle at top right, #003311 0%, #000 50%);
   }
-  
-  /* Top header */
-  .top-header {
+
+ .top-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 50px;
   }
-  
-  .logo {
+
+ .logo {
     font-size: 28px;
     font-weight: 900;
     color: #00ff88;
     text-shadow: 0 0 15px #00ff88;
     line-height: 1.2;
   }
-  
-  .logo-btn {
+
+ .logo-btn {
     background: #00ff88;
     border: none;
     color: black;
@@ -42,9 +41,8 @@
     font-size: 16px;
     box-shadow: 0 0 20px #00ff88;
   }
-  
-  /* Main title */
-  .main-title {
+
+ .main-title {
     text-align: center;
     font-size: 38px;
     font-weight: 900;
@@ -52,8 +50,8 @@
     text-shadow: 0 0 25px white;
     margin-bottom: 5px;
   }
-  
-  .pro-sub {
+
+ .pro-sub {
     text-align: center;
     font-size: 16px;
     font-weight: 600;
@@ -62,9 +60,8 @@
     margin-bottom: 25px;
     text-shadow: 0 0 10px #00ff88;
   }
-  
-  /* Brand name */
-  .brand-name {
+
+ .brand-name {
     text-align: center;
     font-size: 32px;
     font-weight: 900;
@@ -72,9 +69,8 @@
     text-shadow: 0 0 20px #00ff88;
     margin-bottom: 20px;
   }
-  
-  /* Description */
-  .description {
+
+ .description {
     text-align: center;
     font-size: 16px;
     line-height: 1.6;
@@ -83,13 +79,12 @@
     margin: 0 auto 35px;
     padding: 0 10px;
   }
-  
-  /* Search box */
-  .input-container {
+
+ .input-container {
     max-width: 400px;
     margin: 0 auto;
   }
-  
+
   input[type="text"] {
     width: 100%;
     padding: 18px 20px;
@@ -101,17 +96,16 @@
     outline: none;
     box-shadow: 0 0 15px rgba(0,255,136,0.3);
   }
-  
+
   input::placeholder {
     color: #555;
   }
-  
+
   input:focus {
     box-shadow: 0 0 30px #00ff88;
   }
-  
-  /* Phone items */
-  .phone-item {
+
+ .phone-item {
     background: #0a0a0a;
     border: 2px solid #00ff88;
     border-radius: 15px;
@@ -124,15 +118,24 @@
     box-shadow: 0 0 15px rgba(0,255,136,0.2);
     transition: 0.3s;
   }
-  
-  .phone-item:active {
+
+ .phone-item:active {
     background: #00ff88;
     color: black;
     box-shadow: 0 0 30px #00ff88;
     transform: scale(0.98);
   }
-  
-  .footer {
+
+ .brand-header {
+    color: #00ff88;
+    font-size: 20px;
+    font-weight: 900;
+    text-align: center;
+    margin: 20px 0 10px;
+    text-shadow: 0 0 10px #00ff88;
+  }
+
+ .footer {
     text-align: center;
     margin-top: 50px;
     color: #444;
@@ -142,71 +145,118 @@
 </head>
 <body>
 
-<!-- Top header - 2K! KINGDOM sensi -->
 <div class="top-header">
   <div class="logo">2K! KINGDOM<br>SENSI</div>
   <button class="logo-btn">2K! REBBORN</button>
 </div>
 
-<!-- Main content -->
 <h1 class="main-title">BECOME PRO</h1>
 <p class="pro-sub">WITH 2K! REBBORN</p>
 <h2 class="brand-name">2k! REBBON SENSI</h2>
 
-<!-- Description -->
 <p class="description">
   Unlock powerful Free Fire sensitivity settings, improve your aim, master headshots and become a stronger player using unlimited sensitivity recommendations from Nigeria's gaming creator, 2K! REBBORN.
 </p>
 
-<!-- Search box only -->
 <div class="input-container">
-  <input type="text" id="searchInput" placeholder="Search device">
+  <input type="text" id="searchInput" placeholder="Search brand: Samsung, Tecno, iPhone...">
   <div id="resultsList" style="margin-top:20px; max-height:400px; overflow-y:auto;"></div>
 </div>
 
 <div class="footer">🔒 2krebborn.github.io</div>
 
 <script>
-const phoneDatabase = [
-  "iPhone 16 Pro Max",
-  "iPhone 16 Pro", 
-  "iPhone 15 Pro Max",
-  "Samsung Galaxy S24 Ultra",
-  "Samsung A54",
-  "Tecno Spark 20",
-  "Infinix Note 40",
-  "Redmi Note 13"
-];
+// Group devices by brand
+const phoneDatabase = {
+  "iPhone": [
+    "iPhone 16 Pro Max",
+    "iPhone 16 Pro",
+    "iPhone 16 Plus",
+    "iPhone 16",
+    "iPhone 15 Pro Max",
+    "iPhone 14 Pro Max"
+  ],
+  "Samsung": [
+    "Samsung Galaxy S24 Ultra",
+    "Samsung Galaxy S23 Ultra",
+    "Samsung A54",
+    "Samsung A55",
+    "Samsung M55",
+    "Samsung F54"
+  ],
+  "Tecno": [
+    "Tecno Spark 20",
+    "Tecno Spark 20 Pro",
+    "Tecno Camon 30",
+    "Tecno Pova 6",
+    "Tecno Phantom V2"
+  ],
+  "Infinix": [
+    "Infinix Note 40",
+    "Infinix Note 40 Pro",
+    "Infinix GT 20 Pro",
+    "Infinix Hot 40"
+  ],
+  "Redmi/POCO": [
+    "Redmi Note 13",
+    "Redmi Note 13 Pro",
+    "POCO X6 Pro",
+    "POCO F6"
+  ],
+  "Realme": [
+    "Realme 11 Pro",
+    "Realme 12 Pro+",
+    "Realme GT 6"
+  ]
+};
 
 const searchInput = document.getElementById('searchInput');
 const resultsList = document.getElementById('resultsList');
 
 searchInput.addEventListener('input', function() {
   const searchTerm = this.value.toLowerCase().trim();
-  
+
   if(searchTerm === '') {
     resultsList.innerHTML = '';
     return;
   }
-  
-  const filtered = phoneDatabase.filter(phone => 
-    phone.toLowerCase().includes(searchTerm)
-  );
-  
-  if(filtered.length > 0) {
-    resultsList.innerHTML = filtered.map(phone => 
-      `<div class="phone-item" onclick="selectPhone('${phone}')">${phone}</div>`
-    ).join('');
-  } else {
-    resultsList.innerHTML = `<p style="text-align:center; color:#666; padding:20px;">No device found</p>`;
+
+  let html = '';
+
+  // Check each brand
+  for(let brand in phoneDatabase) {
+    // If brand name matches search OR any device matches
+    const brandMatch = brand.toLowerCase().includes(searchTerm);
+    const devices = phoneDatabase[brand].filter(phone =>
+      phone.toLowerCase().includes(searchTerm)
+    );
+
+    if(brandMatch || devices.length > 0) {
+      // Show brand header
+      html += `<div class="brand-header">${brand.toUpperCase()}</div>`;
+
+      // Show all devices under that brand
+      const devicesToShow = brandMatch? phoneDatabase[brand] : devices;
+
+      devicesToShow.forEach(phone => {
+        html += `<div class="phone-item" onclick="selectPhone('${phone}')">${phone}</div>`;
+      });
+    }
   }
+
+  if(html === '') {
+    html = `<p style="text-align:center; color:#666; padding:20px;">No brand found</p>`;
+  }
+
+  resultsList.innerHTML = html;
 });
 
+// UNLIMITED SENSITIVITY FUNCTION
 function selectPhone(phoneName) {
   function randomSens() {
-    return Math.floor(Math.random() * 151) + 50;
+    return Math.floor(Math.random() * 255) + 1; // 1 to 255
   }
-  
+
   const settings = {
     General: randomSens(),
     RedDot: randomSens(),
@@ -215,11 +265,12 @@ function selectPhone(phoneName) {
     Sniper: randomSens(),
     FreeCamera: randomSens()
   };
-  
+
   resultsList.innerHTML = `
-    <h3 style="color:#00ff88; text-align:center; margin-bottom:20px; text-shadow:0 0 10px #00ff88;">
+    <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
       ${phoneName.toUpperCase()} - UNLIMITED 🔥
     </h3>
+    <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Every click = New combo</p>
     <div>
       <div class="phone-item"><b>General:</b> ${settings.General}</div>
       <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
@@ -228,7 +279,8 @@ function selectPhone(phoneName) {
       <div class="phone-item"><b>Sniper:</b> ${settings.Sniper}</div>
       <div class="phone-item"><b>Free Camera:</b> ${settings.FreeCamera}</div>
     </div>
-    <button class="phone-item" style="margin-top:20px; text-align:center; width:100%;" onclick="location.reload()">Search New Device</button>
+    <button class="phone-item" style="margin-top:20px; text-align:center; width:100%;" onclick="selectPhone('${phoneName}')">Generate New Combo 🔄</button>
+    <button class="phone-item" style="margin-top:10px; text-align:center; width:100%; border-color:#666; color:#999;" onclick="location.reload()">Search New Brand</button>
   `;
 }
 </script>
