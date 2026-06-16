@@ -169,10 +169,10 @@ searchInput.addEventListener('input', function() {
       div.textContent = device;
       div.onclick = () => showSensitivity(device);
       suggestions.appendChild(div);
-    });
-  } else {
-suggestions.innerHTML = `<div class="error-msg">Error ❌ wrong input, Device not found, if this error continues contact 2K! Rebborn</div>`;,
-  }
+  });
+} else {
+suggestions.innerHTML = `<div class="error-msg">❌ Wrong signal</div>`;
+}
 });
 
 function showSensitivity(deviceName) {
