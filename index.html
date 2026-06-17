@@ -33,15 +33,15 @@ body {
 .description {text-align: center; font-size: 16px; line-height: 1.7; color: #ccc; max-width: 400px; margin: 0 auto 40px; padding: 0 10px;}
 .input-container {max-width: 420px; margin: 0 auto; position: relative;}
 
-/* PAGE SYSTEM */
-.page {display: none; animation: slideIn 0.4s ease;}
-.page.active {display: block;}
+/* PAGE SYSTEM - Fixed with !important */
+.page {display: none !important; animation: slideIn 0.4s ease;}
+.page.active {display: block !important;}
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(30px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
-/* Page 1 - Match screenshot exactly */
+/* Page 1 */
 .page1-center {display:flex; justify-content:center; margin-top:40px;}
 #searchMain {
   width:100%; 
@@ -53,8 +53,9 @@ body {
   color: white; 
   font-size: 18px; 
   outline: none; 
-  box-shadow: 0 0 25px #00ff88; /* Green glow like screenshot */
+  box-shadow: 0 0 25px #00ff88;
   font-weight: 600;
+  cursor: pointer;
 }
 #searchMain::placeholder {color: #555; font-weight: 500;}
 
@@ -72,7 +73,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* Search bars like screenshot - black bg green border */
+/* Search bars */
 input[type="text"] {
   width:100%; 
   padding: 20px 22px; 
@@ -140,7 +141,7 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   text-shadow: 0 0 15px #00ff88;
 }
 
-/* Watermark small no bold faint */
+/* Watermark */
 .watermark {
   position: absolute;
   bottom: 10px;
@@ -164,38 +165,29 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   <button class="logo-btn">2K! REBBORN</button>
 </div>
 
-<!-- PAGE 1: Match screenshot - Description + Center Search -->
+<!-- PAGE 1 -->
 <div id="page1" class="page active">
   <h1 class="main-title">BECOME PRO</h1>
   <p class="pro-sub">WITH 2K! REBBORN</p>
   <h2 class="brand-name">2K! REBBORN SENSI</h2>
-
-  <p class="description">Unlock Freefire sensitivity settings, improve your aim, master headshot and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
-
+  <p class="description">Unlock Free Fire sensitivity settings, improve your aim, master headshots and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
   <div class="page1-center">
-    <input type="text" id="searchMain" placeholder="Search" readonly>
+    <input type="text" id="searchMain" placeholder="Tap to Search">
   </div>
-  
   <div class="creator-name" style="margin-top:60px;">2K! REBBORN SENSI</div>
 </div>
 
-<!-- PAGE 2: Description + 2 Bars + Results -->
+<!-- PAGE 2 -->
 <div id="page2" class="page">
-  <h1 class="main-title">BECOME PRO</h1>
-  <p class="pro-sub">WITH 2K! REBBORN</p>
   <h2 class="brand-name">2K! REBBORN SENSI</h2>
-
-  <p class="description">Unlock Freefire sensitivity settings, improve your aim, master headshot and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
-
   <div class="input-container">
     <div class="search-tip">
-      Only the sensitivity that suit your phone would be given. Numerous of FF players don’t know sensitivity that suit that device high, low or medium sensi may make your gameplay slow. This sensi given suit your device.
+     <p clsss="description"> Only sensitivity settings that suit your device will be provided. Many Free Fire players do not know which sensitivity works best for their device. High, low, or medium sensitivity may cause slow gameplay. These settings are customized for your device.
     </div>
     <div class="search-row">
       <input type="text" id="searchDevice" placeholder="Search device...">
-      <input type="text" id="searchInches" placeholder="Search by inches...">
+      <input type="text" id="searchInches" placeholder="Search by screen size...">
     </div>
-    
     <div id="suggestions"></div>
     <button id="generateBtn" class="gen-btn">GENERATE</button>
     <div id="resultsList" style="margin-top:20px;"></div>
@@ -208,7 +200,6 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 <script>
 const baseSettings = {};
 
-// Device capability tier
 function getDeviceTier(deviceName) {
   const name = deviceName.toUpperCase();
   if(name.includes('POP') || name.includes('SMART') || name.includes(' C') || name.includes('A01') || name.includes('A02') || name.includes('A03') || name.includes('A04') || name.includes('A05') || name.includes('HOT 9') || name.includes('HOT 10') || name.includes('NOTE 11') || name.includes('NOTE 12')) {
@@ -238,7 +229,6 @@ function getSensi(name) {
   if (!name) name = "6.7 INCHES";
   const hash = deviceHash(name);
   const tier = getDeviceTier(name);
-
   return {
     General: clamp(tier.base + (hash % tier.range), 1, 200),
     RedDot: clamp(tier.base - 5 + ((hash >> 2) % tier.range), 1, 200),
@@ -250,7 +240,7 @@ function getSensi(name) {
 }
 
 const realDevices = [
-  // ===== IPHONE =====
+  // All devices from your code - complete list
   "iPhone 17 Pro Max", "iPhone 17 Pro Max 6.9-inch",
   "iPhone 17 Pro", "iPhone 17 Pro 6.3-inch",
   "iPhone 17", "iPhone 17 6.3-inch",
@@ -285,8 +275,6 @@ const realDevices = [
   "iPhone 7", "iPhone 7 4.7-inch",
   "iPhone 6s Plus", "iPhone 6s", "iPhone 6 Plus", "iPhone 6",
   "iPhone SE", "iPhone SE 4.7-inch", "iPhone 5s", "iPhone 5", "iPhone 4s", "iPhone 4",
-
-  // ===== SAMSUNG =====
   "Samsung Galaxy S24 Ultra", "Samsung Galaxy S24 Ultra 6.8-inch",
   "Samsung Galaxy S24 Plus", "Samsung Galaxy S24 Plus 6.7-inch",
   "Samsung Galaxy S24", "Samsung Galaxy S24 6.2-inch",
@@ -310,8 +298,6 @@ const realDevices = [
   "Samsung Galaxy Z Fold 6", "Samsung Galaxy Z Fold 6 7.6-inch",
   "Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 6 6.7-inch",
   "Samsung Galaxy Note 20 Ultra", "Samsung Galaxy Note 10 Plus",
-
-  // ===== TECNO =====
   "Tecno Phantom V Fold 2", "Tecno Phantom V Fold 2 7.85-inch",
   "Tecno Phantom V Flip 2", "Tecno Phantom V Flip 2 6.9-inch",
   "Tecno Phantom X2 Pro", "Tecno Phantom X2 Pro 6.8-inch",
@@ -331,8 +317,6 @@ const realDevices = [
   "Tecno Pova 5 Pro", "Tecno Pova 5 Pro 6.78-inch",
   "Tecno Pova 3", "Tecno Pova 3 6.9-inch",
   "Tecno Pova 2",
-
-  // ===== TECNO POP FROM BEGINNING =====
   "Tecno Pop 9", "Tecno Pop 9 6.6-inch",
   "Tecno Pop 8", "Tecno Pop 8 6.56-inch",
   "Tecno Pop 7", "Tecno Pop 7 6.56-inch",
@@ -342,8 +326,6 @@ const realDevices = [
   "Tecno Pop 3", "Tecno Pop 3 5.5-inch",
   "Tecno Pop 2", "Tecno Pop 2 5.5-inch",
   "Tecno Pop 1", "Tecno Pop 1 5.5-inch",
-
-  // ===== INFINIX FROM BEGINNING =====
   "Infinix Note 40 Pro Plus", "Infinix Note 40 Pro Plus 6.78-inch",
   "Infinix Note 40 Pro", "Infinix Note 40 Pro 6.78-inch",
   "Infinix Note 40", "Infinix Note 40 6.78-inch",
@@ -367,8 +349,6 @@ const realDevices = [
   "Infinix Smart 8", "Infinix Smart 8 6.6-inch",
   "Infinix Smart 7", "Infinix Smart 7 6.6-inch",
   "Infinix Smart 6", "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3",
-
-  // ===== NOKIA FROM BEGINNING =====
   "Nokia G42", "Nokia G42 6.56-inch",
   "Nokia G22", "Nokia G22 6.52-inch",
   "Nokia G21", "Nokia G21 6.5-inch",
@@ -382,8 +362,6 @@ const realDevices = [
   "Nokia 9 PureView", "Nokia 8.1", "Nokia 7.1", "Nokia 6.1 Plus", "Nokia 5.1 Plus", "Nokia 3.1 Plus", "Nokia 2.1", "Nokia 1",
   "Nokia 3310 4G", "Nokia 2720 Flip", "Nokia 800 Tough", "Nokia 6300 4G", "Nokia 105", "Nokia 110",
   "Nokia Lumia 950", "Nokia Lumia 950 XL", "Nokia Lumia 930", "Nokia Lumia 830", "Nokia Lumia 730", "Nokia Lumia 635",
-
-  // ===== OTHER BRANDS =====
   "Xiaomi 14 Ultra", "Xiaomi 14 Pro", "Xiaomi 14",
   "Redmi Note 14 Pro Plus", "Redmi Note 13 Pro",
   "Poco X6 Pro", "Poco F6 Pro",
@@ -391,14 +369,10 @@ const realDevices = [
   "Oppo Reno 11", "Oppo A78",
   "Vivo V30", "Vivo Y100",
   "OnePlus 12", "OnePlus Nord 3",
-
-  // ===== iPAD + TABLETS BY INCHES =====
   "iPad Pro 11-inch M4", "iPad Pro 12.9-inch M4", "iPad Air 11-inch M2",
   "iPad 10.9-inch 10th Gen", "iPad Mini 8.3-inch 6th Gen",
   "Samsung Galaxy Tab S9 Ultra 14.6-inch", "Samsung Galaxy Tab S9 11-inch",
   "Lenovo Tab P12 12.7-inch", "Xiaomi Pad 6 Max 14-inch", "OnePlus Pad 11.6-inch",
-
-  // ===== PC + GAMING LAPTOP + COMPUTER BY INCHES =====
   "PC Gaming 24-inch 144Hz", "PC Gaming 27-inch 144Hz", "PC Gaming 32-inch 144Hz",
   "PC Gaming 27-inch 240Hz", "PC Gaming 32-inch 240Hz", "PC Gaming 24-inch 360Hz",
   "Gaming Computer 27-inch 165Hz", "Gaming Computer 32-inch 200Hz",
@@ -407,8 +381,6 @@ const realDevices = [
   "ROG Strix 16-inch", "ROG Zephyrus 14-inch", "MSI Katana 15.6-inch",
   "Alienware 16-inch", "Alienware 18-inch",
   "Macbook Pro 14-inch M3", "Macbook Pro 16-inch M3 Max", "Macbook Air 13-inch M2",
-
-  // ===== CONSOLES =====
   "Playstation 5", "PS5", "Playstation 4 Pro", "Playstation 4",
   "Xbox Series X", "Xbox Series S", "Nintendo Switch OLED", "Nintendo Switch"
 ];
@@ -423,7 +395,6 @@ const resultsList = document.getElementById('resultsList');
 const generateBtn = document.getElementById('generateBtn');
 let selectedDevice = '';
 
-// CLICK PAGE 1 SEARCH → GO TO PAGE 2
 searchMain.addEventListener('click', function() {
   page1.classList.remove('active');
   page2.classList.add('active');
@@ -436,7 +407,6 @@ function handleSearch(input, type) {
   suggestions.innerHTML = '';
   resultsList.innerHTML = '';
   generateBtn.style.display = 'none';
-
   if(searchTerm === '') return;
 
   let matched = [];
@@ -464,7 +434,7 @@ function handleSearch(input, type) {
       suggestions.appendChild(div);
     });
   } else {
-    suggestions.innerHTML = `<div class="error-msg">⚠️ Wrong input device not generated, if this error continues contact 2K! Rebborn</div>`;
+    suggestions.innerHTML = `<div class="error-msg">⚠️ Device not found. If this error continues, please contact 2K! Rebborn</div>`;
   }
 }
 
@@ -484,7 +454,6 @@ function showSensitivity(deviceName) {
   searchDevice.value = deviceName;
   searchInches.value = '';
   const settings = getSensi(deviceName);
-
   const sensiText = `2K! REBBORN SENSI
 ${deviceName.toUpperCase()} - PRO 🔥
 General: ${settings.General}
@@ -495,7 +464,6 @@ Sniper: ${settings.Sniper}
 FreeLook: ${settings.FreeCamera}
 
 2K! REBBORN`;
-
   resultsList.innerHTML = `
     <div class="result-box" id="resultBox">
       <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
@@ -513,23 +481,19 @@ FreeLook: ${settings.FreeCamera}
       <div class="watermark">2K! REBBORN</div>
       <button style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">📋 COPY SENSI</button>
     <div style="margin-top:30px;padding:20px;background:#1a1a1a;border-radius:10px;border:1px solid #333">
-  <h3 style="color:#00ff88;margin-bottom:15px">⭐ Rate This Sensi + Drop Review</h3>
-  
+  <h3 style="color:#00ff88;margin-bottom:15px">⭐ Rate This Sensitivity + Leave a Review</h3>
   <div style="margin-bottom:10px">
     <label style="color:#ccc">Your Rating: </label>
     <select id="rating" style="padding:5px;background:#000;color:#fff;border:1px solid #444">
-      <option value="5">⭐ 5 Stars - Headshot Machine!</option>
-      <option value="4">⭐ 4 Stars - E dey work</option>
-      <option value="3">⭐ 3 Stars - Normal</option>
-      <option value="2">⭐ 2 Stars - No too work</option>
-      <option value="1">⭐ 1 Star - Na waste</option>
+      <option value="5">⭐ 5 Stars - Excellent!</option>
+      <option value="4">⭐ 4 Stars - Works Great</option>
+      <option value="3">⭐ 3 Stars - Average</option>
+      <option value="2">⭐ 2 Stars - Below Average</option>
+      <option value="1">⭐ 1 Star - Poor</option>
     </select>
   </div>
-  
-  <textarea id="reviewText" placeholder="Talk wetin you feel about this sensi... E work? Headshot dey land?" style="width:100%;height:80px;padding:10px;background:#000;color:#fff;border:1px solid #444;border-radius:5px;resize:none"></textarea>
-  
+  <textarea id="reviewText" placeholder="Share your experience with this sensitivity setting..." style="width:100%;height:80px;padding:10px;background:#000;color:#fff;border:1px solid #444;border-radius:5px;resize:none"></textarea>
   <button onclick="submitReview()" style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:5px;margin-top:10px;cursor:pointer;font-weight:bold">📝 Submit Review</button>
-  
   <div id="reviewList" style="margin-top:20px"></div>
 </div>
     </div>
@@ -537,48 +501,44 @@ FreeLook: ${settings.FreeCamera}
 }
 
 function copySensi(text) {
-  // Method 1: Try modern clipboard API first
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text).then(() => {
-      alert('✅ Sensi copied! You fit paste am anywhere');
+      alert('✅ Sensitivity settings copied successfully');
     }).catch(() => {
-      fallbackCopy(text); // If e fail, use backup method
+      fallbackCopy(text);
     });
   } else {
-    fallbackCopy(text); // Backup for HTTP or old browser
-  function submitReview() {
+    fallbackCopy(text);
+  }
+} // FIXED: Added closing bracket here
+
+function submitReview() {
   const rating = document.getElementById('rating').value;
   const text = document.getElementById('reviewText').value.trim();
-  
   if(text === '') {
-    alert('❌ Abeg write something first!');
+    alert('❌ Please write a review before submitting');
     return;
   }
-  
-  // Save to localStorage - e go save for each user's browser
   const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
   reviews.unshift({
     rating: rating,
     text: text,
     date: new Date().toLocaleDateString()
   });
-  
   localStorage.setItem('sensiReviews', JSON.stringify(reviews));
-  
   document.getElementById('reviewText').value = '';
-  alert('✅ Thanks boss! Your review don enter!');
+  alert('✅ Thank you! Your review has been submitted');
   displayReviews();
 }
 
 function displayReviews() {
   const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
   const listDiv = document.getElementById('reviewList');
-  
+  if(!listDiv) return;
   if(reviews.length === 0) {
-    listDiv.innerHTML = '<p style="color:#666">No review yet. Be the first to talk!</p>';
+    listDiv.innerHTML = '<p style="color:#666">No reviews yet. Be the first to share your experience!</p>';
     return;
   }
-  
   listDiv.innerHTML = '<h4 style="color:#00ff88;margin-bottom:10px">💬 Latest Reviews:</h4>' + 
     reviews.slice(0, 10).map(r => `
       <div style="background:#000;padding:10px;margin-bottom:8px;border-radius:5px;border-left:3px solid #00ff88">
@@ -589,12 +549,6 @@ function displayReviews() {
     `).join('');
 }
 
-// Show reviews when page load
-window.onload = displayReviews;
-  }
-}
-
-// Backup method - works on all phones
 function fallbackCopy(text) {
   const textArea = document.createElement('textarea');
   textArea.value = text;
@@ -605,21 +559,20 @@ function fallbackCopy(text) {
   document.body.appendChild(textArea);
   textArea.focus();
   textArea.select();
-  
   try {
     const successful = document.execCommand('copy');
     if (successful) {
-      alert('✅ Sensi copied! You can past it anywhere');
+      alert('✅ Sensitivity settings copied successfully');
     } else {
-      alert('❌ Copy failed. Long press the text and copy manually');
+      alert('❌ Copy failed. Please long press and copy manually');
     }
   } catch (err) {
-    alert('❌ Copy failed. Long press the text and copy manually');
+    alert('❌ Copy failed. Please long press and copy manually');
   }
-  
   document.body.removeChild(textArea);
 }
+
+window.addEventListener('load', displayReviews);
 </script>
-  
 </body>
 </html>
