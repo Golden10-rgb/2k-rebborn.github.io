@@ -21,8 +21,25 @@ body {
 .pro-sub {text-align: center; font-size: 18px; font-weight: 700; color: #00ff88; font-style: italic; margin-bottom: 30px; text-shadow: 0 0 15px #00ff88;}
 .brand-name {text-align: center; font-size: 34px; font-weight: 900; color: #00ff88; text-shadow: 0 0 25px #00ff88; margin-bottom: 25px;}
 .description {text-align: center; font-size: 16px; line-height: 1.7; color: #ccc; max-width: 400px; margin: 0 auto 40px; padding: 0 10px;}
-.input-container {max-width: 420px; margin: 0 auto; position: relative;}
-input[type="text"] {width: 100%; padding: 20px 22px; background: #0a0a0a; border: 3px solid #00ff88; border-radius: 18px; color: white; font-size: 18px; outline: none; box-shadow: 0 0 20px rgba(0,255,136,0.4); font-weight: 600;}
+.input-container {max-width: 500px; margin: 0 auto; position: relative;}
+.search-bars {display:none; flex-direction:column; gap:15px; margin-bottom:15px; animation: slideDown 0.4s ease;}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.search-tip {
+  background: rgba(0,255,136,0.1);
+  border: 2px solid #00ff88;
+  border-radius: 15px;
+  padding: 15px;
+  font-size: 14px;
+  color: #66ffaa;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.search-row {display:flex; gap:10px; flex-wrap:wrap;}
+input[type="text"] {flex:1; min-width:200px; padding: 20px 22px; background: #0a0a0a; border: 3px solid #00ff88; border-radius: 18px; color: white; font-size: 18px; outline: none; box-shadow: 0 0 20px rgba(0,255,136,0.4); font-weight: 600;}
 input::placeholder {color: #555; font-weight: 500;}
 input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 .suggestion-item {background: #0a0a0a; border: 2px solid #00ff88; border-radius: 15px; padding: 18px 20px; margin-bottom: 10px; color: white; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0,255,136,0.2); transition: 0.3s;}
@@ -50,6 +67,14 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   box-shadow: 0 0 30px #00ccff;
   transform: scale(1.02);
 }
+.creator-name {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #00ff88;
+  text-shadow: 0 0 15px #00ff88;
+}
 </style>
 </head>
 <body>
@@ -61,14 +86,29 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 
 <h1 class="main-title">BECOME PRO</h1>
 <p class="pro-sub">WITH 2K! REBBORN</p>
-<h2 class="brand-name">2k! REBBON SENSI</h2>
+<h2 class="brand-name">2K! REBBORN SENSI</h2>
 
 <p class="description">Unlock Freefire sensitivity settings, improve your aim, master headshot and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
+
 <div class="input-container">
-  <input type="text" id="searchInput" placeholder="Search device...">
+  <!-- First bar only - placeholder "Search" -->
+  <input type="text" id="searchMain" placeholder="Search" readonly>
+  
+  <!-- Hidden 2 bars + description - show after click -->
+  <div class="search-bars" id="searchBars">
+    <div class="search-tip">
+      Only the sensitivity that suit your phone would be given. Numerous of FF players don’t know sensitivity that suit that device either high, low or medium sensi may make your gameplay slow. This sensi given suit your device.
+    </div>
+    <div class="search-row">
+      <input type="text" id="searchDevice" placeholder="Search device...">
+      <input type="text" id="searchInches" placeholder="Search by inches...">
+    </div>
+  </div>
+  
   <div id="suggestions"></div>
   <button id="generateBtn" class="gen-btn">GENERATE</button>
   <div id="resultsList" style="margin-top:20px;"></div>
+  <div class="creator-name">2K! REBBORN SENSI</div>
 </div>
 
 <div class="footer">🔒 2krebborn.github.io</div>
@@ -76,32 +116,47 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 <script>
 const baseSettings = {};
 
-// FIXED: Remove "-inch" so both versions give same sensi
-function getBaseSettings(deviceName) {
-  const baseName = deviceName.replace(/\s\d+\.?\d*-inch/g, '').trim();
-
-  if(!baseSettings[baseName]) {
-    let hash = 0;
-    for(let i = 0; i < baseName.length; i++) {
-      hash = baseName.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    function randFromHash(seed) {
-      const x = Math.sin(seed) * 10000;
-      return x - Math.floor(x);
-    }
-    baseSettings[baseName] = {
-      General: Math.floor(randFromHash(hash) * 52) + 85,
-      RedDot: Math.floor(randFromHash(hash + 1) * 71) + 90,
-      Scope2x: Math.floor(randFromHash(hash + 2) * 75) + 75,
-      Scope4x: Math.floor(randFromHash(hash + 3) * 86) + 80,
-      Sniper: Math.floor(randFromHash(hash + 4) * 11) + 40,
-      FreeCamera: Math.floor(randFromHash(hash + 5) * 15) + 130
-    };
+// Device capability tier
+function getDeviceTier(deviceName) {
+  const name = deviceName.toUpperCase();
+  if(name.includes('POP') || name.includes('SMART') || name.includes(' C') || name.includes('A01') || name.includes('A02') || name.includes('A03') || name.includes('A04') || name.includes('A05') || name.includes('HOT 9') || name.includes('HOT 10') || name.includes('NOTE 11') || name.includes('NOTE 12')) {
+    return { base: 70, range: 60 };
   }
-  return baseSettings[baseName];
+  if(name.includes('SPARK') || name.includes('NOTE 30') || name.includes('A25') || name.includes('A35') || name.includes('M35') || name.includes('POVA 3') || name.includes('POVA 5')) {
+    return { base: 100, range: 80 };
+  }
+  return { base: 130, range: 70 };
 }
 
-// MERGED: All devices from beginning till 2026 + inches
+function deviceHash(str) {
+  let hash = 0;
+  str = str.toUpperCase().trim();
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+}
+
+function clamp(num, min, max) {
+  return Math.min(Math.max(num, min), max);
+}
+
+function getSensi(name) {
+  if (!name) name = "6.7 INCHES";
+  const hash = deviceHash(name);
+  const tier = getDeviceTier(name);
+
+  return {
+    General: clamp(tier.base + (hash % tier.range), 1, 200),
+    RedDot: clamp(tier.base - 5 + ((hash >> 2) % tier.range), 1, 200),
+    Scope2x: clamp(tier.base + ((hash >> 4) % tier.range), 1, 200),
+    Scope4x: clamp(tier.base - 15 + ((hash >> 6) % tier.range), 1, 200),
+    Sniper: clamp(tier.base - 40 + ((hash >> 8) % (tier.range - 20)), 1, 200),
+    FreeCamera: clamp(tier.base + ((hash >> 10) % tier.range), 1, 200)
+  };
+}
+
 const realDevices = [
   // ===== IPHONE =====
   "iPhone 17 Pro Max", "iPhone 17 Pro Max 6.9-inch",
@@ -266,23 +321,40 @@ const realDevices = [
   "Xbox Series X", "Xbox Series S", "Nintendo Switch OLED", "Nintendo Switch"
 ];
 
-const searchInput = document.getElementById('searchInput');
+const searchMain = document.getElementById('searchMain');
+const searchBars = document.getElementById('searchBars');
+const searchDevice = document.getElementById('searchDevice');
+const searchInches = document.getElementById('searchInches');
 const suggestions = document.getElementById('suggestions');
 const resultsList = document.getElementById('resultsList');
 const generateBtn = document.getElementById('generateBtn');
 let selectedDevice = '';
 
-searchInput.addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase().trim();
+// CLICK MAIN BAR → SHOW 2 BARS + DESCRIPTION
+searchMain.addEventListener('click', function() {
+  searchBars.style.display = 'flex';
+  searchDevice.focus();
+  searchMain.style.display = 'none';
+});
+
+function handleSearch(input, type) {
+  const searchTerm = input.value.toLowerCase().trim();
   suggestions.innerHTML = '';
   resultsList.innerHTML = '';
   generateBtn.style.display = 'none';
 
   if(searchTerm === '') return;
 
-  const matched = realDevices.filter(device =>
-    device.toLowerCase().includes(searchTerm)
-  );
+  let matched = [];
+  if(type === 'device') {
+    matched = realDevices.filter(device =>
+      !device.includes('-inch') && device.toLowerCase().includes(searchTerm)
+    );
+  } else {
+    matched = realDevices.filter(device =>
+      device.includes('-inch') && device.toLowerCase().includes(searchTerm)
+    );
+  }
 
   if(matched.length > 0) {
     matched.slice(0, 30).forEach(device => {
@@ -291,7 +363,7 @@ searchInput.addEventListener('input', function() {
       div.textContent = device;
       div.onclick = () => {
         selectedDevice = device;
-        searchInput.value = device;
+        input.value = device;
         suggestions.innerHTML = '';
         generateBtn.style.display = 'block';
       };
@@ -300,7 +372,10 @@ searchInput.addEventListener('input', function() {
   } else {
     suggestions.innerHTML = `<div class="error-msg">⚠️ Wrong input device not generated, if this error continues contact 2K! Rebborn</div>`;
   }
-});
+}
+
+searchDevice.addEventListener('input', () => handleSearch(searchDevice, 'device'));
+searchInches.addEventListener('input', () => handleSearch(searchInches, 'inches'));
 
 generateBtn.addEventListener('click', () => {
   if(selectedDevice && selectedDevice.trim()!== '') {
@@ -312,21 +387,22 @@ generateBtn.addEventListener('click', () => {
 
 function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
-  searchInput.value = deviceName;
-  const settings = getBaseSettings(deviceName);
+  searchDevice.value = deviceName;
+  searchInches.value = '';
+  const settings = getSensi(deviceName);
 
   resultsList.innerHTML = `
     <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
       ${deviceName.toUpperCase()} - PRO 🔥
     </h3>
-    <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Locked Range Settings</p>
+    <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Locked Range Settings 1-200</p>
     <div>
       <div class="phone-item"><b>General:</b> ${settings.General}</div>
       <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
       <div class="phone-item"><b>2x Scope:</b> ${settings.Scope2x}</div>
       <div class="phone-item"><b>4x Scope:</b> ${settings.Scope4x}</div>
       <div class="phone-item"><b>Sniper:</b> ${settings.Sniper}</div>
-      <div class="phone-item"><b>Free Camera:</b> ${settings.FreeCamera}</div>
+      <div class="phone-item"><b>FreeLook:</b> ${settings.FreeCamera}</div>
     </div>
   `;
 }
