@@ -511,7 +511,7 @@ FreeLook: ${settings.FreeCamera}
         <div class="phone-item"><b>FreeLook:</b> ${settings.FreeCamera}</div>
       </div>
       <div class="watermark">2K! REBBORN</div>
-      <button class="copy-btn" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">📋 COPY SENSI</button>
+      <button style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">📋 COPY SENSI</button>
     </div>
   `;
 }
@@ -544,12 +544,12 @@ function fallbackCopy(text) {
   try {
     const successful = document.execCommand('copy');
     if (successful) {
-      alert('✅ Sensi copied! You fit paste am anywhere');
+      alert('✅ Sensi copied! You can past it anywhere');
     } else {
-      alert('❌ Copy failed. Long press the text make you copy am manually');
+      alert('❌ Copy failed. Long press the text and copy manually');
     }
   } catch (err) {
-    alert('❌ Copy failed. Long press the text make you copy am manually');
+    alert('❌ Copy failed. Long press the text and copy manually');
   }
   
   document.body.removeChild(textArea);
