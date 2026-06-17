@@ -178,15 +178,35 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 <script>
 const baseSettings = {};
 
-function getDeviceTier(deviceName) {
-  const name = deviceName.toUpperCase();
-  if(name.includes('POP') || name.includes('SMART') || name.includes(' C') || name.includes('A01') || name.includes('A02') || name.includes('A03') || name.includes('A04') || name.includes('A05') || name.includes('HOT 9') || name.includes('HOT 10') || name.includes('NOTE 11') || name.includes('NOTE 12')) {
-    return { base: 70, range: 60 };
-  }
-  if(name.includes('SPARK') || name.includes('NOTE 30') || name.includes('A25') || name.includes('A35') || name.includes('M35') || name.includes('POVA 3') || name.includes('POVA 5')) {
-    return { base: 100, range: 80 };
-  }
-  return { base: 130, range: 70 };
+function getDeviceTier(name) {
+name = name.toLowerCase();
+
+// 1. Flagship first
+  if (name.includes('s25') || name.includes('s24') || name.includes('s23') || name.includes('s22') || name.includes('iphone 15') || name.includes('iphone 16')) 
+  return { base: 100, range: 40 };
+  
+  // 2. Samsung A5x > A3x > A2x > A1x > A0x
+  if (name.includes('a5')) return { base: 92, range: 45 };
+  if (name.includes('a3')) return { base: 88, range: 48 };
+  if (name.includes('a2')) return { base: 85, range: 50 };
+  if (name.includes('a1')) return { base: 80, range: 52 };
+  if (name.includes('a0')) return { base: 75, range: 55 };
+  
+  // 3. Samsung M series
+  if (name.includes('m5') || name.includes('m55') || name.includes('m56')) return { base: 90, range: 46 };
+  if (name.includes('m3') || name.includes('m33') || name.includes('m34') || name.includes('m35')) return { base: 86, range: 49 };
+  if (name.includes('m1') || name.includes('m0')) return { base: 78, range: 53 };
+  
+  // 4. Samsung F series
+  if (name.includes('f5') || name.includes('f54') || name.includes('f55')) return { base: 88, range: 48 };
+  if (name.includes('f1') || name.includes('f0') || name.includes('f2')) return { base: 78, range: 53 };
+  
+  // 5. Other brands
+  if (name.includes('poco') || name.includes('redmi note')) return { base: 88, range: 48 };
+  if (name.includes('redmi') || name.includes('realme')) return { base: 82, range: 51 };
+  if (name.includes('infinix') || name.includes('tecno')) return { base: 70, range: 60 };
+  
+  return { base: 82, range: 51 };
 }
 
 function deviceHash(str) {
@@ -279,6 +299,44 @@ const realDevices = [
   "Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 6 6.7-inch",
   "Samsung Galaxy Note 20 Ultra", "Samsung Galaxy Note 10 Plus",
 
+  // SAMSUNG A1x SERIES - Budget:
+"Samsung A10", "Samsung A10s", "Samsung A11", 
+"Samsung A12", "Samsung A13", "Samsung A13 5G", "Samsung A14", "Samsung A14 5G", 
+"Samsung A15", "Samsung A15 5G", "Samsung A16", "Samsung A16 5G",
+
+// SAMSUNG A2x SERIES - Lower Midrange:
+"Samsung A20", "Samsung A20s", "Samsung A21s",
+"Samsung A22", "Samsung A22 5G", "Samsung A23", "Samsung A23 5G", 
+"Samsung A24", "Samsung A24 4G", "Samsung A25", "Samsung A25 5G", 
+"Samsung A26", "Samsung A26 5G"
+  
+  // SAMSUNG A0x SERIES:
+ "Samsung A01", "Samsung A01 Core",
+ "Samsung A02", "Samsung A02s", 
+ "Samsung A03", "Samsung A03 Core", "Samsung A03s",
+ "Samsung A04", "Samsung A04e", "Samsung A04s",
+ "Samsung A05", "Samsung A05s", "Samsung A06", "Samsung A06s",
+ "Samsung A07", "Samsung A07s"
+
+// SAMSUNG A3x SERIES - Midrange King:
+"Samsung A30", "Samsung A30s", "Samsung A31", "Samsung A32", "Samsung A32 5G",
+"Samsung A33 5G", "Samsung A34 5G", "Samsung A35 5G", "Samsung A36 5G",
+
+// SAMSUNG A5x SERIES - Upper Midrange:
+"Samsung A50", "Samsung A51", "Samsung A52", "Samsung A52 5G", "Samsung A53 5G", 
+"Samsung A54 5G", "Samsung A55 5G", "Samsung A56 5G"
+  
+ // SAMSUNG M SERIES - Big Battery:
+"Samsung M01", "Samsung M02", "Samsung M10", "Samsung M11", "Samsung M12",
+"Samsung M13", "Samsung M14", "Samsung M14 5G", "Samsung M15", "Samsung M15 5G",
+"Samsung M33 5G", "Samsung M34 5G", "Samsung M35 5G", "Samsung M51", "Samsung M52 5G", 
+"Samsung M53 5G", "Samsung M54 5G", "Samsung M55 5G", "Samsung M56 5G",
+
+// SAMSUNG F SERIES - Flipkart India:
+"Samsung F04", "Samsung F12", "Samsung F13", "Samsung F14", "Samsung F14 5G",
+"Samsung F15", "Samsung F15 5G", "Samsung F23 5G", "Samsung F34 5G", "Samsung F41", 
+"Samsung F42 5G", "Samsung F54 5G", "Samsung F55 5G"
+  
   // TECNO
   "Tecno Phantom V Fold 2", "Tecno Phantom V Fold 2 7.85-inch",
   "Tecno Phantom V Flip 2", "Tecno Phantom V Flip 2 6.9-inch",
