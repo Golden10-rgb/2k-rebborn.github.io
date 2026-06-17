@@ -517,12 +517,44 @@ FreeLook: ${settings.FreeCamera}
 }
 
 function copySensi(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    alert('✅ Sensi copied! You can paste it anywhere');
-  }).catch(() => {
-    alert('❌ Copy failed. Select and copy manually');
-  });
+  // Method 1: Try modern clipboard API first
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('✅ Sensi copied! You fit paste am anywhere');
+    }).catch(() => {
+      fallbackCopy(text); // If e fail, use backup method
+    });
+  } else {
+    fallbackCopy(text); // Backup for HTTP or old browser
+  }
+}
+
+// Backup method - works on all phones
+function fallbackCopy(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.top = '0';
+  textArea.style.left = '0';
+  textArea.style.opacity = '0';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      alert('✅ Sensi copied! You fit paste am anywhere');
+    } else {
+      alert('❌ Copy failed. Long press the text make you copy am manually');
+    }
+  } catch (err) {
+    alert('❌ Copy failed. Long press the text make you copy am manually');
+  }
+  
+  document.body.removeChild(textArea);
 }
 </script>
+  
 </body>
 </html>
